@@ -67,6 +67,25 @@ int get_enter_home_thres(const zombie_type& type)
     case zombie_type::snorkel:
         threshold = -130;
         break;
+    case zombie_type::none:
+    case zombie_type::zombie:
+    case zombie_type::flag:
+    case zombie_type::conehead:
+    case zombie_type::buckethead:
+    case zombie_type::newspaper:
+    case zombie_type::screendoor:
+    case zombie_type::ducky_tube:
+    case zombie_type::balloon:
+    case zombie_type::digger:
+    case zombie_type::pogo:
+    case zombie_type::yeti:
+    case zombie_type::bungee:
+    case zombie_type::ladder:
+    case zombie_type::dolphin_rider:
+    case zombie_type::imp:
+    case zombie_type::jack_in_the_box:
+        threshold = -100;
+        break;
     default:
         threshold = -100;
         break;
