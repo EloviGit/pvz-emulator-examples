@@ -18,8 +18,10 @@
 
 std::wstring utf8_to_wstring(const std::string& str)
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    return converter.from_bytes(str);
+    int len = MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), nullptr, 0);
+    std::wstring wstr(len, 0);
+    MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), wstr.data(), len);
+    return wstr;
 }
 
 // format: 2009.12.25_21.41.37
@@ -58,9 +60,11 @@ std::vector<std::string> parse_cmd_line()
     LocalFree(argv);
 
     std::vector<std::string> cmd_args;
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     for (const auto& arg : args) {
-        cmd_args.push_back(converter.to_bytes(arg));
+        int len = WideCharToMultiByte(CP_UTF8, 0, arg.data(), static_cast<int>(arg.size()), nullptr, 0, nullptr, nullptr);
+        std::string utf8str(len, 0);
+        WideCharToMultiByte(CP_UTF8, 0, arg.data(), static_cast<int>(arg.size()), utf8str.data(), len, nullptr, nullptr);
+        cmd_args.push_back(utf8str);
     }
     return cmd_args;
 }

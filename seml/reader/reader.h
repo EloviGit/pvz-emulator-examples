@@ -229,8 +229,10 @@ void read_config(const rapidjson::Value& val, Config& config)
 
 Config read_json(const std::string& filename)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring filename_wstr = converter.from_bytes(filename);
+
+    int len = MultiByteToWideChar(CP_UTF8, 0, filename.data(), static_cast<int>(filename.size()), nullptr, 0);
+    std::wstring filename_wstr(len, 0);
+    MultiByteToWideChar(CP_UTF8, 0, filename.data(), static_cast<int>(filename.size()), filename_wstr.data(), len);
 
     // FILE* fp = std::fopen(filename.c_str(), "rb");
     FILE* fp = _wfopen(filename_wstr.c_str(), L"rb");
